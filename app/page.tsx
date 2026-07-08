@@ -2,6 +2,8 @@
 import axios from "axios";
 import Navbar from "./components/Navbar";
 import { useQuery } from "@tanstack/react-query";
+import { format, parseISO } from "date-fns";
+import Container from "./components/Container";
 
 export interface WeatherForecastResponse {
   cod: string;
@@ -93,6 +95,8 @@ export default function Home() {
       // ),
   })
 
+  const firstData = data?.list[0]
+
   console.log("Data" , data)
 
   if (isLoading) return (
@@ -109,6 +113,20 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-4 min-h-screen bg-gray-600">
       <Navbar />
+      <main className="px-3 max-w-7xl mx-auto flex flex-col gap-9 w-full pb-10 pt-4">
+
+        <section>
+          <div>
+            <h2 className="flex gap-2 text-2xl items-end">
+              <p>{format(parseISO(firstData?.dt_txt ?? ""), "EEEE")}</p>
+              <p className="text-lg">({format(parseISO(firstData?.dt_txt ?? ""), "dd.MM.yyyy")})</p>
+
+            </h2>
+            <Container className="gap-10 px-6 items-center"></Container>
+          </div>
+        </section>
+
+      </main>
     </div>
   );
 }
